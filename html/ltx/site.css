@@ -1,0 +1,13 @@
+body{background:#fff;color:#1b1b1b;font:17px/1.6 Georgia,'Times New Roman',serif;margin:0}
+.ltx_page_main{max-width:48rem;margin:0 auto;padding:1rem 16px 3rem}
+.site-bar{font-size:.95rem;margin:.5rem 0 1rem;color:#5b5b5b}
+.site-bar a,.ltx_page_content a{color:#0b57a4}
+.site-toc{border:1px solid #e3e3e3;border-radius:6px;padding:.4rem .9rem;margin:0 0 1.2rem;font-size:.95rem}
+.site-toc summary{cursor:pointer;font-weight:bold}
+.site-toc ol{margin:.3rem 0;padding-left:1.4rem}
+.ltx_title_document{font-size:1.9rem;line-height:1.25}
+h6.ltx_title,.ltx_title_abstract{font-size:1rem}
+.ltx_title_theorem{font-size:1rem}
+.ltx_equation,.ltx_equationgroup{overflow-x:auto;max-width:100%}
+.ltx_page_footer{font-size:.8rem;color:#777;text-align:center}
+.ltx_url,.ltx_ref_tag{font-family:inherit}

@@ -21,16 +21,21 @@ body{background:var(--bg);color:var(--fg);font:16px/1.6 Georgia,'Times New Roman
 main{max-width:46rem;margin:0 auto;padding:2rem 16px 4rem}
 a{color:var(--link)} h1{font-size:1.9rem;margin:0 0 .2rem} h2{font-size:1.25rem;margin:2.2rem 0 .6rem;border-bottom:1px solid var(--rule);padding-bottom:.3rem}
 .muted{color:var(--muted)} .paper{margin:0 0 1.1rem} .paper .t{font-weight:bold} .links a{margin-right:.8rem}
-.abs{white-space:normal} footer{margin-top:3rem;font-size:.9rem;color:var(--muted)}
+.abs{white-space:normal} .lean{display:inline-block;font:600 .78rem/1.5 system-ui,sans-serif;color:#fff;background:#2e7d32;border-radius:999px;padding:0 .55rem;margin-left:.45rem;text-decoration:none;vertical-align:middle} pre{background:var(--rule);padding:.7rem;overflow-x:auto;font-size:.85rem;border-radius:6px} footer{margin-top:3rem;font-size:.9rem;color:var(--muted)}
 </style>
 </head>
 <body><main>
 <p><a href="../index.html">Ruiyi Zhang</a></p>
-<h1>Irrationality of the dilogarithm at reciprocals of integers</h1>
+<h1>Irrationality of the dilogarithm at reciprocals of integers<a class="lean" href="https://github.com/ryzfsu/li2-integer-reciprocals-irrationality/tree/main/lean" title="Main theorem formally verified in Lean 4; axioms propext, Classical.choice, Quot.sound">✓ Lean 4 verified</a></h1>
 <p class="muted">Ruiyi Zhang · Preprint, 2026-10-11 · 57 pages</p>
 <p class="links"><a href="li2-integer-reciprocals-irrationality.pdf">PDF</a><a href="https://doi.org/10.5281/zenodo.23296411">DOI 10.5281/zenodo.23296411</a><a href="https://github.com/ryzfsu/li2-integer-reciprocals-irrationality">Source and checks</a></p>
 <h2>Abstract</h2>
 <p class="abs">We prove that Li_2(1/n) is irrational for every nonzero integer n. The proof combines a determinant criterion with exact fixed-base integerization, logarithmic-potential estimates, Frobenius nonvanishing, and a three-form Hermite–Padé construction. The finite positive range is treated by a common variational problem and two endpoint certificates; the negative middle range is handled by signed contour integrals at the six bases −2, …, −7; the two remaining tails follow from an explicit Hermite–Padé estimate. Every numerical constant used in the argument is given as a rational bound or an explicitly directed interval.</p>
+<h2>Formal verification</h2>
+<p>The main theorem is formalized in Lean 4 (Lean 4.35.0-rc4, Mathlib 25e572b8). The formal statement is</p>
+<pre>theorem li2_inv_irrational (n : ℤ) (hn : n ≠ 0) :
+    Irrational (∑&#x27; k : ℕ, ((n : ℝ)⁻¹) ^ (k + 1) / ((k : ℝ) + 1) ^ 2)</pre>
+<p>The only hypothesis is n ≠ 0. The proof uses only the axioms propext, Classical.choice and Quot.sound, and is accepted by the Lean kernel and by the independent nanoda kernel. Files: <a href="https://github.com/ryzfsu/li2-integer-reciprocals-irrationality/tree/main/lean">lean/</a>.</p>
 <h2>Cite</h2>
 <p>Ruiyi Zhang, <i>Irrationality of the dilogarithm at reciprocals of integers</i>, preprint, Zenodo, 2026. <a href="https://doi.org/10.5281/zenodo.23296411">https://doi.org/10.5281/zenodo.23296411</a></p>
 <footer>The papers are licensed under CC BY 4.0. Source files and checking programs are on <a href="https://github.com/ryzfsu">GitHub</a>.</footer>

@@ -475,13 +475,13 @@ function layoutBest(rankDirs) {
   $('#cy').style.height = h + 'px'; cy.resize();
   cy.fit(cy.elements(), pad); if (cy.zoom() > 1) { cy.zoom(1); cy.center(); }
 }
-function phoneOverviewLayout() { // fixed three-column layout: estimates side by side, their data below
+function overviewLayout() { // fixed ranks: main theorem, Final argument, the three estimates side by side, shared/vendored, data under the estimate it serves
   const COL = {final: 0, analytic: 0, integer: -1, nonvan: 1, shared: 0.55, 'data-analytic': 0, 'data-integer': -1, 'data-nonvan': 1, vendor: -0.55};
   const ROW = {final: 1, analytic: 2, integer: 2, nonvan: 2, vendor: 3, shared: 3, 'data-analytic': 4, 'data-integer': 4, 'data-nonvan': 4};
-  const ns = cy.nodes(), wx = Math.max(...ns.map(n => n.data('bw'))) + 8, hy = Math.max(...ns.map(n => n.data('bh'))) + 30;
+  const nar = narrow(), ns = cy.nodes(), wx = Math.max(...ns.map(n => n.data('bw'))) + (nar ? 8 : 40), hy = Math.max(...ns.map(n => n.data('bh'))) + (nar ? 30 : 34);
   ns.forEach(n => { const r = n.data('ref'); const key = r === 'root' ? 'root' : AREAS[r].key;
     n.position(key === 'root' ? {x: 0, y: 0} : {x: COL[key] * wx, y: ROW[key] * hy}); });
-  const pad = 10, cw = $('#cy').clientWidth, bb = cy.elements().boundingBox(), z = Math.min(1, (cw - 2 * pad) / bb.w);
+  const pad = nar ? 10 : 18, cw = $('#cy').clientWidth, bb = cy.elements().boundingBox(), z = Math.min(1, (cw - 2 * pad) / bb.w);
   $('#cy').style.height = Math.max(300, bb.h * z + 2 * pad + 8) + 'px'; cy.resize();
   cy.fit(cy.elements(), pad); if (cy.zoom() > 1) { cy.zoom(1); cy.center(); }
 }
@@ -489,7 +489,7 @@ function render() {
   const els = level === 'ov' ? overview() : level === 'mod' ? moduleLevel() : declLevel();
   if (cy) cy.destroy();
   cy = cytoscape({container: $('#cy'), elements: els, style: style(), minZoom: .1, maxZoom: 2.5, layout: {name: 'preset'}, autoungrabify: true});
-  if (level === 'ov' && narrow()) phoneOverviewLayout(); else layoutBest(['LR', 'TB']);
+  if (level === 'ov') overviewLayout(); else layoutBest(['LR', 'TB']);
   cy.on('tap', 'node', ev => select(ev.target));
   cy.on('dbltap', 'node', ev => deeper(ev.target));
   cy.on('tap', ev => { if (ev.target === cy) cy.elements().removeClass('faded hi'); });

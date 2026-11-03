@@ -11,3 +11,12 @@ h6.ltx_title,.ltx_title_abstract{font-size:1rem}
 .ltx_equation,.ltx_equationgroup{overflow-x:auto;max-width:100%}
 .ltx_page_footer{font-size:.8rem;color:#777;text-align:center}
 .ltx_url,.ltx_ref_tag{font-family:inherit}
+.ltx_page_main,.ltx_page_content,.ltx_document{min-width:0}
+.ltx_page_content{overflow-wrap:break-word}
+.ltx_table,.ltx_tabular,table.ltx_tabular{max-width:100%}
+figure.ltx_table{overflow-x:auto}
+.ltx_tabular{display:block;overflow-x:auto}
+.ltx_font_typewriter{word-break:break-all}
+.ltx_equation,.ltx_equationgroup,.ltx_eqn_table{display:block;overflow-x:auto;max-width:100%}
+.ltx_title_document{text-transform:none}
+.ltx_eqn_eqno{padding-right:.9em;white-space:nowrap}

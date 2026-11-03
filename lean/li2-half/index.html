@@ -111,29 +111,6 @@ footer{margin-top:3rem;font-size:.9rem;color:var(--muted)}
 </p>
 
 <p>The paper proves that Li₂(1/2) = Σ<sub>n≥1</sub> 2<sup>−n</sup>/n² is irrational using determinant polynomials G<sub>m</sub>(T), an analytic bound by a logarithmic energy, a common denominator from binomial valuations, and nonvanishing from a Lucas congruence modulo 83. The Lean 4 formalization proves the same statement with no hypotheses. This page shows its dependency graph, extracted from the compiled Lean environment: every project declaration that the main theorem uses, directly or indirectly, with the axioms each one depends on.</p>
-
-<div class="tiles" id="tiles"></div>
-
-<h2>Statement</h2>
-<div class="cmp">
-  <div class="card">
-    <h3>In the paper</h3>
-    <p>For |w| ≤ 1 let Li₂(w) = Σ<sub>n≥1</sub> w<sup>n</sup>/n².</p>
-    <p><b>Theorem 1.</b> <i>The number Li₂(1/2) is irrational.</i></p>
-  </div>
-  <div class="card">
-    <h3>In Lean (<a id="solLink" href="#">Solution.lean</a>)</h3>
-<pre>theorem li2_half_irrational :
-    Irrational
-      (∑' k : ℕ, ((2 : ℝ)⁻¹) ^ (k + 1)
-                    / ((k : ℝ) + 1) ^ 2)</pre>
-    <p class="note muted">The index <code>k</code> starts at 0, so <code>k + 1</code> runs over n ≥ 1. <code>Irrational</code> is Mathlib's predicate x ∉ range((↑) : ℚ → ℝ).</p>
-  </div>
-</div>
-
-<h2>Axioms</h2>
-<pre id="axioms"></pre>
-<p class="note">These three are Lean's standard axioms (propositional extensionality, choice, quotient soundness). No <code>sorryAx</code> and no project-specific axiom occurs. The released package also records acceptance by the Lean kernel through the comparator and by the independent nanoda type checker.</p>
 </main>
 
 <section class="wide">
@@ -158,6 +135,30 @@ footer{margin-top:3rem;font-size:.9rem;color:var(--muted)}
 <div id="tip"></div>
 
 <main style="padding-top:0">
+
+<div class="tiles" id="tiles"></div>
+
+<h2>Statement</h2>
+<div class="cmp">
+  <div class="card">
+    <h3>In the paper</h3>
+    <p>For |w| ≤ 1 let Li₂(w) = Σ<sub>n≥1</sub> w<sup>n</sup>/n².</p>
+    <p><b>Theorem 1.</b> <i>The number Li₂(1/2) is irrational.</i></p>
+  </div>
+  <div class="card">
+    <h3>In Lean (<a id="solLink" href="#">Solution.lean</a>)</h3>
+<pre>theorem li2_half_irrational :
+    Irrational
+      (∑' k : ℕ, ((2 : ℝ)⁻¹) ^ (k + 1)
+                    / ((k : ℝ) + 1) ^ 2)</pre>
+    <p class="note muted">The index <code>k</code> starts at 0, so <code>k + 1</code> runs over n ≥ 1. <code>Irrational</code> is Mathlib's predicate x ∉ range((↑) : ℚ → ℝ).</p>
+  </div>
+</div>
+
+<h2>Axioms</h2>
+<pre id="axioms"></pre>
+<p class="note">These three are Lean's standard axioms (propositional extensionality, choice, quotient soundness). No <code>sorryAx</code> and no project-specific axiom occurs. The released package also records acceptance by the Lean kernel through the comparator and by the independent nanoda type checker.</p>
+
 <h2>How the parts are formed</h2>
 <p class="note">The final theorem combines four inputs, as in §10 of the paper. For each input the map takes the dependency closure of its top-level Lean declarations; a module belongs to the input that uses most of its declarations exclusively.</p>
 <ul class="areas" id="areaList"></ul>

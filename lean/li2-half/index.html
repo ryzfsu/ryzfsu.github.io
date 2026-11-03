@@ -31,7 +31,9 @@ main{max-width:46rem;margin:0 auto;padding:2rem 16px 1.5rem}
 a{color:var(--link)}
 h1{font-size:1.85rem;line-height:1.25;margin:.2rem 0 .3rem}
 h2{font-size:1.25rem;margin:2.2rem 0 .6rem;border-bottom:1px solid var(--rule);padding-bottom:.3rem}
-.intro h2{margin-top:1rem}
+.intro h2{margin-top:.4rem}
+.howto{margin-top:.8rem}
+main.top{padding-bottom:.5rem}
 .muted{color:var(--muted)}
 .links a{margin-right:1rem;text-decoration:none;white-space:nowrap}.links a:hover{text-decoration:underline}
 .ico{width:1.05em;height:1.05em;vertical-align:-.17em;margin-right:.3em}
@@ -100,7 +102,7 @@ footer{margin-top:3rem;font-size:.9rem;color:var(--muted)}
 </style>
 </head>
 <body>
-<main>
+<main class="top">
 <p><a href="/">Ruiyi Zhang</a></p>
 <h1>Irrationality of Li₂(1/2): Lean proof map<span class="badge" title="Kernel-checked; axioms propext, Classical.choice, Quot.sound">✓ Lean 4 verified</span></h1>
 <p class="muted">Ruiyi Zhang · Lean 4.35.0-rc4 · Mathlib <span class="mono">25e572b8</span></p>
@@ -114,8 +116,7 @@ footer{margin-top:3rem;font-size:.9rem;color:var(--muted)}
 </main>
 
 <section class="wide">
-<div class="intro"><h2>Dependency graph</h2>
-<p class="note">Three levels. <b>Overview</b>: the parts of the proof. <b>Modules</b>: the Lean files of one part, grouped by folder when there are many. <b>Declarations</b>: one declaration with what it uses and what uses it. Click a node for details; double-click, or use the button in the panel, to open it one level deeper. Arrows point from a user to what it uses.</p></div>
+<div class="intro"><h2>Dependency graph</h2></div>
 <div class="controls">
   <div class="seg" role="group" aria-label="Level">
     <button id="vOv" aria-pressed="true">Overview</button><button id="vMod" aria-pressed="false">Modules</button><button id="vDecl" aria-pressed="false">Declarations</button>
@@ -131,6 +132,7 @@ footer{margin-top:3rem;font-size:.9rem;color:var(--muted)}
   <aside id="detail" aria-live="polite"></aside>
 </div>
 <div class="legend" id="legend"></div>
+<div class="intro"><p class="note howto">Three levels. <b>Overview</b>: the parts of the proof. <b>Modules</b>: the Lean files of one part, grouped by folder when there are many. <b>Declarations</b>: one declaration with what it uses and what uses it. Click a node for details; double-click, or use the button in the panel, to open it one level deeper. Arrows point from a user to what it uses.</p></div>
 </section>
 <div id="tip"></div>
 

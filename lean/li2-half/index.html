@@ -32,7 +32,9 @@ a{color:var(--link)}
 h1{font-size:1.85rem;line-height:1.25;margin:.2rem 0 .3rem}
 h2{font-size:1.25rem;margin:2.2rem 0 .6rem;border-bottom:1px solid var(--rule);padding-bottom:.3rem}
 .intro h2{margin-top:.4rem}
-.howto{margin-top:.8rem}
+.howto{margin-top:.4rem}
+section.graph{margin-top:1.6rem;margin-bottom:1.6rem}
+.figcap{text-align:center;font-size:1rem;margin:.9rem 0 .2rem}
 main.top{padding-bottom:.5rem}
 .muted{color:var(--muted)}
 .links a{margin-right:1rem;text-decoration:none;white-space:nowrap}.links a:hover{text-decoration:underline}
@@ -83,6 +85,7 @@ pre{background:var(--code);padding:.75rem .9rem;overflow-x:auto;font-size:.84rem
 #detail dt{color:var(--muted)} #detail dd{margin:0;word-break:break-word}
 #detail ul{margin:.2rem 0 .5rem;padding-left:1.1rem;max-height:16rem;overflow:auto}
 #detail li{word-break:break-all;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.76rem;margin:.1rem 0}
+#detail ul.plain li{font-family:inherit;font-size:.82rem;word-break:normal}
 #detail a,.top td a{text-decoration:none} #detail a:hover,.top td a:hover{text-decoration:underline}
 #detail .act{display:flex;gap:.4rem;flex-wrap:wrap;margin:.5rem 0}
 #detail .act button,#detail .act a{font:inherit;font-size:.8rem;border:1px solid var(--rule);background:var(--bg);color:var(--fg);border-radius:6px;padding:.25rem .55rem;cursor:pointer;text-decoration:none}
@@ -115,8 +118,7 @@ footer{margin-top:3rem;font-size:.9rem;color:var(--muted)}
 <p>The paper proves that Li₂(1/2) = Σ<sub>n≥1</sub> 2<sup>−n</sup>/n² is irrational using determinant polynomials G<sub>m</sub>(T), an analytic bound by a logarithmic energy, a common denominator from binomial valuations, and nonvanishing from a Lucas congruence modulo 83. The Lean 4 formalization proves the same statement with no hypotheses. This page shows its dependency graph, extracted from the compiled Lean environment: every project declaration that the main theorem uses, directly or indirectly, with the axioms each one depends on.</p>
 </main>
 
-<section class="wide">
-<div class="intro"><h2>Dependency graph</h2></div>
+<section class="wide graph">
 <div class="controls">
   <div class="seg" role="group" aria-label="Level">
     <button id="vOv" aria-pressed="true">Overview</button><button id="vMod" aria-pressed="false">Modules</button><button id="vDecl" aria-pressed="false">Declarations</button>
@@ -132,7 +134,7 @@ footer{margin-top:3rem;font-size:.9rem;color:var(--muted)}
   <aside id="detail" aria-live="polite"></aside>
 </div>
 <div class="legend" id="legend"></div>
-<div class="intro"><p class="note howto">Three levels. <b>Overview</b>: the parts of the proof. <b>Modules</b>: the Lean files of one part, grouped by folder when there are many. <b>Declarations</b>: one declaration with what it uses and what uses it. Click a node for details; double-click, or use the button in the panel, to open it one level deeper. Arrows point from a user to what it uses.</p></div>
+<div class="intro"><p class="figcap"><b>Figure.</b> Dependency graph of the Lean proof.</p><p class="note howto">Three levels. <b>Overview</b>: the parts of the proof. <b>Modules</b>: the Lean files of one part, grouped by folder when there are many. <b>Declarations</b>: one declaration with what it uses and what uses it. Click a node for details; double-click, or use the button in the panel, to open it one level deeper. Arrows point from a user to what it uses.</p></div>
 </section>
 <div id="tip"></div>
 
@@ -162,7 +164,8 @@ footer{margin-top:3rem;font-size:.9rem;color:var(--muted)}
 <p class="note">These three are Lean's standard axioms (propositional extensionality, choice, quotient soundness). No <code>sorryAx</code> and no project-specific axiom occurs. The released package also records acceptance by the Lean kernel through the comparator and by the independent nanoda type checker.</p>
 
 <h2>How the parts are formed</h2>
-<p class="note">The final theorem combines four inputs, as in §10 of the paper. For each input the map takes the dependency closure of its top-level Lean declarations; a module belongs to the input that uses most of its declarations exclusively.</p>
+<p class="note">The final theorem combines four inputs, as in §10 of the paper: the analytic bound (1.2), integerization (1.3), nonvanishing (1.4) and the endpoint criterion. For each input the map takes the dependency closure of its top-level Lean declarations. Parts are assigned to declarations, not files: a declaration reached from exactly one input belongs to that input, a declaration reached from two or more inputs is a shared definition, and the few declarations above all four inputs are the final wiring. A file can therefore hold declarations of several parts; such files are marked in the module view. Generated data tables and vendored code form a separate axis (what a file contains, not what it proves); each of those boxes is used by exactly one input.</p>
+<p class="note" id="checks"></p>
 <ul class="areas" id="areaList"></ul>
 
 <h2>Most-used declarations</h2>
@@ -192,11 +195,16 @@ $('#solLink').href = GH + 'Solution.lean';
 $('#srcLink').href = 'https://github.com/ryzfsu/li2-half-irrationality/tree/' + M.commit + '/lean';
 
 /* ---------- decode ---------- */
-const AREAS = G.areas.map(([key, label, desc]) => ({key, label, desc}));
-const MODS = G.mods.map(([n, a, g], i) => ({i, id: unpack(n), area: a, group: g, decls: []}));
+const AREAS = G.areas.map(([key, label, desc, color]) => ({key, label, desc, color}));
+const MODS = G.mods.map(([n, a, g], i) => ({i, id: unpack(n), area: a, group: g, decls: [], parts: AREAS.map(() => 0)}));
 MODS.forEach(m => { m.short = m.id.replace(/^Li2Lean\./, ''); m.file = m.id.replace(/\./g, '/') + '.lean'; m.url = GH + m.file; });
-const D = G.decls.map(([n, k, m, l, len, ax, ex], i) => ({i, id: unpack(n), kind: G.kinds[k], mod: m, line: l, end: l + len, ax: G.axsets[ax], ex}));
-D.forEach(d => MODS[d.mod].decls.push(d.i));
+const D = G.decls.map(([n, k, m, l, len, ax, ex, p], i) => ({i, id: unpack(n), kind: G.kinds[k], mod: m, line: l, end: l + len, ax: G.axsets[ax], ex, part: p}));
+D.forEach(d => { MODS[d.mod].decls.push(d.i); MODS[d.mod].parts[d.part]++; });
+MODS.forEach(m => { m.nparts = m.parts.filter(x => x).length; });
+const PK = Object.fromEntries(AREAS.map((a, i) => [a.key, i]));
+// a data part serves exactly one input; its rows are values of that input's structure types
+const SERVES = AREAS.map(a => a.key.startsWith('data-') ? PK[a.key.slice(5)] : a.key === 'vendor' ? PK.integer : -1);
+const typedBy = (pa, pb) => SERVES[pa] === pb && AREAS[pa].key.startsWith('data-');
 const out = D.map(() => []), inn = D.map(() => []);
 for (let k = 0; k < G.edges.length; k += 2) { out[G.edges[k]].push(G.edges[k + 1]); inn[G.edges[k + 1]].push(G.edges[k]); }
 const byId = new Map(D.map(d => [d.id, d.i]));
@@ -204,9 +212,16 @@ const rootIdx = byId.get(M.root), rootMod = D[rootIdx].mod;
 const depth = new Int32Array(D.length).fill(-1); { const q = [rootIdx]; depth[rootIdx] = 0; for (let h = 0; h < q.length; h++) for (const w of out[q[h]]) if (depth[w] < 0) { depth[w] = depth[q[h]] + 1; q.push(w); } }
 const declUrl = d => GH + MODS[d.mod].file + (d.line ? `#L${d.line}-L${d.end}` : '');
 const shortDecl = id => { const p = id.split('.'); return p[p.length - 1]; };
-// module-level edge weights
-const mEdge = new Map();
-for (let k = 0; k < G.edges.length; k += 2) { const a = D[G.edges[k]].mod, b = D[G.edges[k + 1]].mod; if (a !== b) { const key = a * 4096 + b; mEdge.set(key, (mEdge.get(key) || 0) + 1); } }
+// cross-part declaration edges (row uses column)
+const PMAT = AREAS.map(() => AREAS.map(() => 0)), PUSED = AREAS.map(() => AREAS.map(() => new Set())), PUSER = AREAS.map(() => AREAS.map(() => new Set()));
+for (let k = 0; k < G.edges.length; k += 2) { const a = G.edges[k], b = G.edges[k + 1], pa = D[a].part, pb = D[b].part; if (pa !== pb) { PMAT[pa][pb]++; PUSED[pa][pb].add(b); PUSER[pb][pa].add(a); } }
+function scopeEdges(p) { // module-level edges between declarations of part p
+  const w = new Map();
+  for (let k = 0; k < G.edges.length; k += 2) { const a = G.edges[k], b = G.edges[k + 1];
+    if (D[a].part !== p || D[b].part !== p) continue; const ma = D[a].mod, mb = D[b].mod; if (ma === mb) continue;
+    const key = ma * 4096 + mb; w.set(key, (w.get(key) || 0) + 1); }
+  return w;
+}
 
 /* ---------- static sections ---------- */
 $('#axioms').textContent = '#print axioms li2_half_irrational\n\n' + (M.axiomsOutput || '');
@@ -220,7 +235,7 @@ function lum(hex) { const c = hex.replace('#', ''); const v = [0, 2, 4].map(i =>
 let PAL;
 function palette() {
   PAL = {edge: css('--edge'), hi: css('--edge-hi'), fg: css('--fg'), muted: css('--muted'), canvas: css('--canvas'), bg: css('--bg'), rule: css('--rule')};
-  PAL.area = AREAS.map(a => css('--a-' + a.key)); PAL.root = css('--a-root');
+  PAL.area = AREAS.map(a => css('--a-' + a.color)); PAL.root = css('--a-root');
 }
 palette();
 const fill = key => key === 'root' ? PAL.root : key === 'ctx' ? PAL.canvas : PAL.area[key];
@@ -269,29 +284,30 @@ const narrow = () => $('#cy').clientWidth < 560;
 const maxNodes = () => narrow() ? 9 : 16;
 
 /* ---------- level 1: overview ---------- */
+function partFiles(p) { return MODS.filter(m => m.parts[p] && m.i !== rootMod); }
 function overview() {
-  const els = [], counts = AREAS.map(() => ({m: 0, d: 0}));
-  MODS.forEach(m => { if (m.i === rootMod) return; counts[m.area].m++; counts[m.area].d += m.decls.length; });
-  const nar = narrow();
+  const els = [], nar = narrow();
   const rb = nar ? box('li2_half_ irrational', 'main theorem', 12, 2) : box('li2_half_irrational', 'main theorem', 20, 1);
   els.push({data: {id: 'root', key: 'root', ref: 'root', ...rb}});
-  AREAS.forEach((a, i) => { if (!counts[i].m) return;
-    const b = box(a.label, nar ? plural(counts[i].m, 'file') : `${plural(counts[i].m, 'file')} · ${fmt(counts[i].d)} decls`, nar ? 14 : 22, 2);
-    els.push({data: {id: 'a' + i, key: i, ref: i, ...b}}); });
-  const w = new Map();
-  mEdge.forEach((c, k) => { const a = Math.floor(k / 4096), b = k % 4096;
-    const A = a === rootMod ? 'root' : 'a' + MODS[a].area, B = b === rootMod ? 'root' : 'a' + MODS[b].area;
-    if (A !== B) w.set(A + '|' + B, (w.get(A + '|' + B) || 0) + c); });
+  AREAS.forEach((a, i) => { const nf = partFiles(i).length, nd = D.filter(d => d.part === i && d.i !== rootIdx).length; if (!nd) return;
+    const b = box(a.label, nar ? plural(nd, 'decl') : `${plural(nf, 'file')} · ${plural(nd, 'decl')}`, nar ? 14 : 22, 2);
+    const ax = a.key.startsWith('data') || a.key === 'vendor'; if (ax) b.bw += 12;
+    els.push({data: {id: 'a' + i, key: i, ref: i, ...b}, classes: ax ? 'axis' : ''}); });
+  const w = new Map(); let hidden = 0;
+  for (let k = 0; k < G.edges.length; k += 2) { const a = G.edges[k], b = G.edges[k + 1], pa = D[a].part, pb = D[b].part;
+    const A = a === rootIdx ? 'root' : 'a' + pa, B = b === rootIdx ? 'root' : 'a' + pb;
+    if (A === B) continue; if (typedBy(pa, pb)) { hidden++; continue; }
+    w.set(A + '|' + B, (w.get(A + '|' + B) || 0) + 1); }
   let E = [...w.keys()].map(k => k.split('|')); const total = E.length;
   if (!$('#allEdges').checked) E = reduce(els.map(e => e.data.id), E);
   E.forEach(([a, b]) => els.push({data: {id: a + '>' + b, source: a, target: b, w: w.get(a + '|' + b)}}));
-  info(`${AREAS.length} parts and the main theorem · ${E.length}${E.length < total ? ' of ' + total : ''} edges`);
+  info(`${AREAS.length} parts and the main theorem · ${E.length}${E.length < total ? ' of ' + total : ''} edges · ${fmt(hidden)} data → structure-type edges not drawn (see the data panels)`);
   crumbs([['Overview']]);
   return els;
 }
 
 /* ---------- level 2: modules of one part ---------- */
-function scopeMods() { return MODS.filter(m => m.area === scope.area && m.i !== rootMod && (scope.group === null || m.group === scope.group)); }
+function scopeMods() { return MODS.filter(m => m.parts[scope.area] && m.i !== rootMod && (scope.group === null || m.group === scope.group)); }
 function sccMax(nodes, edges) { // size of the largest strongly connected component
   const adj = new Map(nodes.map(n => [n, []])); edges.forEach(([a, b]) => adj.get(a).push(b));
   const radj = new Map(nodes.map(n => [n, []])); edges.forEach(([a, b]) => radj.get(b).push(a));
@@ -305,7 +321,7 @@ function sccMax(nodes, edges) { // size of the largest strongly connected compon
 }
 function layerOrder(S) { // modules of S from the top of the part downwards (longest path from the users)
   const inS = new Set(S.map(m => m.i)), preds = new Map(S.map(m => [m.i, []]));
-  mEdge.forEach((c, k) => { const a = Math.floor(k / 4096), b = k % 4096; if (inS.has(a) && inS.has(b)) preds.get(b).push(a); });
+  scopeEdges(scope.area).forEach((c, k) => { const a = Math.floor(k / 4096), b = k % 4096; if (inS.has(a) && inS.has(b)) preds.get(b).push(a); });
   const lev = new Map(); let changed = true, it = 0;
   S.forEach(m => lev.set(m.i, 0));
   while (changed && it++ < 200) { changed = false; S.forEach(m => { const l = Math.max(0, ...preds.get(m.i).map(p => lev.get(p) + 1)); if (l > lev.get(m.i) && l < 400) { lev.set(m.i, l); changed = true; } }); }
@@ -320,7 +336,7 @@ function moduleLevel() {
   if (scope.group === null && S.length > max && byGroup.size > 1 && byGroup.size <= Math.max(max, 12)) {
     // folders, if the folder graph is close to a DAG
     const gi = new Map(); S.forEach(m => gi.set(m.i, m.group)); const ge = new Set();
-    mEdge.forEach((c, k) => { const a = gi.get(Math.floor(k / 4096)), b = gi.get(k % 4096); if (a && b && a !== b) ge.add(a + '\u0000' + b); });
+    scopeEdges(scope.area).forEach((c, k) => { const a = gi.get(Math.floor(k / 4096)), b = gi.get(k % 4096); if (a && b && a !== b) ge.add(a + '\u0000' + b); });
     if (sccMax([...byGroup.keys()], [...ge].map(x => x.split('\u0000'))) <= 2) mode = 'groups';
   }
   if (mode === 'groups') {
@@ -335,20 +351,22 @@ function moduleLevel() {
   } else {
     S.forEach(m => { nodes.push({id: 'm:' + m.i, kind: 'module', mod: m}); nodeOf.set(m.i, 'm:' + m.i); });
   }
-  const w = new Map(), ctx = new Set();
-  mEdge.forEach((c, k) => { const a = Math.floor(k / 4096), b = k % 4096; let A = nodeOf.get(a), B = nodeOf.get(b);
-    if (!A && !B) return;
-    if (!A) { if (a !== rootMod && MODS[a].area === scope.area) return; A = a === rootMod ? 'x:root' : 'x:' + MODS[a].area; ctx.add(A); }
-    if (!B) { if (b !== rootMod && MODS[b].area === scope.area) return; B = b === rootMod ? 'x:root' : 'x:' + MODS[b].area; ctx.add(B); }
-    if (A === B) return; const key = A + '|' + B; w.set(key, (w.get(key) || 0) + c); });
+  const w = new Map(), ctx = new Set(), P = scope.area;
+  for (let k = 0; k < G.edges.length; k += 2) { const a = G.edges[k], b = G.edges[k + 1], pa = D[a].part, pb = D[b].part;
+    if (pa !== P && pb !== P) continue;
+    let A, B;
+    if (pa === P) { A = nodeOf.get(D[a].mod); if (!A) continue; } else { if (typedBy(pa, pb)) continue; A = a === rootIdx ? 'x:root' : 'x:' + pa; }
+    if (pb === P) { B = nodeOf.get(D[b].mod); if (!B) continue; } else { if (typedBy(pa, pb)) continue; B = b === rootIdx ? 'x:root' : 'x:' + pb; }
+    if (A === B) continue; if (A.startsWith('x:')) ctx.add(A); if (B.startsWith('x:')) ctx.add(B);
+    const key = A + '|' + B; w.set(key, (w.get(key) || 0) + 1); }
   const els = [];
   nodes.forEach(n => {
     let b;
     if (n.kind === 'group') b = box(n.group.replace(/^P0\./, 'P0 '), plural(n.mods.length, 'file'), nar ? 14 : 18, 3);
     else if (n.kind === 'up') b = box(`▲ ${plural(n.mods.length, 'file')}`, 'above (users)', 16, 1);
     else if (n.kind === 'down') b = box(`▼ ${plural(n.mods.length, 'file')}`, 'below (used)', 16, 1);
-    else b = box(modLabel(n.mod), null, nar ? 12 : 16, 3);
-    els.push({data: {id: n.id, key: scope.area, ref: n.id, ...b}, classes: n.kind === 'module' ? '' : 'agg'});
+    else b = box(modLabel(n.mod), n.mod.nparts > 1 ? `${n.mod.parts[scope.area]} of ${n.mod.decls.length} decls` : null, nar ? 12 : 16, 3);
+    els.push({data: {id: n.id, key: scope.area, ref: n.id, ...b}, classes: n.kind === 'module' ? (n.mod.nparts > 1 ? 'mixed' : '') : 'agg'});
   });
   if (nar) { ctx.clear(); [...w.keys()].forEach(k => { if (k.includes('x:')) w.delete(k); }); }
   ctx.forEach(id => { const lab = id === 'x:root' ? 'main theorem' : id === 'x:same' ? 'rest of this part' : AREAS[+id.slice(2)].label;
@@ -387,13 +405,14 @@ function declLevel() {
   const total = E.length;
   if (!$('#allEdges').checked) E = reduce(ids, E);
   const els = ids.map(i => { const d = D[i];
-    return {data: {id: 'd' + i, key: i === rootIdx ? 'root' : MODS[d.mod].area, ref: i, kind: d.kind, ...box(shortDecl(d.id), null, nar ? 15 : 20, 3)}, classes: i === focus ? 'focus' : ''}; });
+    return {data: {id: 'd' + i, key: i === rootIdx ? 'root' : d.part, ref: i, kind: d.kind, ...box(shortDecl(d.id), null, nar ? 15 : 20, 3)}, classes: i === focus ? 'focus' : ''}; });
   if (hidden) els.push({data: {id: 'more', key: 'ctx', ref: 'more', ...box(`+${hidden} more`, 'see panel', 14, 1)}, classes: 'ctx'});
   if (hidden) els.push({data: {id: 'd' + focus + '>more', source: 'd' + focus, target: 'more'}, classes: 'ctxedge'});
   E.forEach(([a, b]) => els.push({data: {id: 'd' + a + '>d' + b, source: 'd' + a, target: 'd' + b}}));
   info(`${shortDecl(D[focus].id)}: ${ids.length} declarations shown` + (hidden ? `, ${hidden} more dependencies listed in the panel` : '') + ` · ${E.length}${E.length < total ? ' of ' + total : ''} edges` + (inn[focus].length > nu ? ` · ${inn[focus].length} users, ${nu} shown` : ''));
   const m = MODS[D[focus].mod];
-  crumbs([['Overview', () => go('ov')], [AREAS[m.area].label, () => { scope = {area: m.area, group: null, off: 0}; go('mod'); }], [m.short, () => gotoModule(m)], [shortDecl(D[focus].id)]]);
+  const fp = D[focus].part;
+  crumbs([['Overview', () => go('ov')], [AREAS[fp].label, () => { scope = {area: fp, group: null, off: 0}; go('mod'); }], [m.short, () => gotoModule(m, fp)], [shortDecl(D[focus].id)]]);
   return els;
 }
 
@@ -409,6 +428,8 @@ function style() {
     {selector: 'node[kind = "def"], node[kind = "opaque"]', style: {'shape': 'rectangle'}},
     {selector: 'node[kind = "structure"], node[kind = "class"], node[kind = "inductive"]', style: {'shape': 'cut-rectangle'}},
     {selector: 'node[kind = "instance"]', style: {'shape': 'barrel'}},
+    {selector: 'node.mixed', style: {'border-width': 2.5, 'border-style': 'dashed', 'border-color': PAL.fg}},
+    {selector: 'node.axis', style: {'shape': 'cut-rectangle', 'border-width': 0}},
     {selector: 'node.focus', style: {'border-width': 3, 'border-color': PAL.fg, 'font-weight': 700}},
     {selector: 'node:selected', style: {'border-width': 3, 'border-color': PAL.fg, 'border-style': 'solid'}},
     {selector: 'edge', style: {'width': e => e.data('w') ? Math.min(5, 1 + Math.log10(e.data('w')) * 1.1) : 1.2, 'line-color': PAL.edge, 'target-arrow-color': PAL.edge,
@@ -490,6 +511,7 @@ function legend() {
   const sq = c => `<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><rect x="1" y="2.5" width="12" height="9" rx="2.5" fill="${c}"/></svg>`;
   const items = [[sq(PAL.root), 'main theorem']].concat(AREAS.map((a, i) => [sq(PAL.area[i]), a.label]));
   items.push([`<svg width="14" height="14" aria-hidden="true"><rect x="1" y="2.5" width="12" height="9" rx="2.5" fill="none" stroke="${PAL.muted}" stroke-dasharray="2.5 2"/></svg>`, 'other part (context)']);
+  if (level === 'mod') items.push([`<svg width="14" height="14" aria-hidden="true"><rect x="1.5" y="3" width="11" height="8" rx="2.5" fill="${PAL.muted}" stroke="${PAL.fg}" stroke-width="1.6" stroke-dasharray="2.5 1.6"/></svg>`, 'file also holds declarations of other parts']);
   if (level === 'decl') {
     const g = PAL.muted;
     items.push([`<svg width="14" height="14" aria-hidden="true"><rect x="1" y="2.5" width="12" height="9" rx="3" fill="${g}"/></svg>`, 'theorem'],
@@ -507,24 +529,35 @@ const modLink = m => `<a data-mod="${m.i}" href="#" title="${esc(m.id)}">${esc(m
 const pills = arr => arr.length ? arr.map(a => `<span class="pill">${esc(a)}</span>`).join('') : '<span class="muted">none</span>';
 const extPills = ex => { const r = []; for (let k = 0; k < ex.length; k += 2) r.push(`${G.extGroups[ex[k]]} · ${ex[k + 1]}`); return pills(r); };
 function axOf(ids) { const s = new Set(); ids.forEach(i => D[i].ax.split(',').filter(Boolean).forEach(a => s.add(a))); return [...s]; }
-function modsPanel(title, ms, sub, extra) {
-  const ds = ms.flatMap(m => m.decls), top = ms.slice().sort((a, b) => b.decls.length - a.decls.length);
+function modsPanel(title, ms, sub, extra, p) {
+  if (p === undefined) p = level === 'mod' ? scope.area : null;
+  const cnt = m => p === null ? m.decls.length : m.parts[p];
+  const ds = ms.flatMap(m => p === null ? m.decls : m.decls.filter(i => D[i].part === p)), top = ms.slice().sort((a, b) => cnt(b) - cnt(a));
   $('#detail').innerHTML = `<h3>${esc(title)}</h3>${sub ? `<p>${sub}</p>` : ''}<dl><dt>files</dt><dd>${fmt(ms.length)}</dd><dt>declarations</dt><dd>${fmt(ds.length)}</dd>` +
     `<dt>sorry</dt><dd>none</dd><dt>axioms</dt><dd>${pills(axOf(ds))}</dd></dl>${extra || ''}` +
-    `<b>Files</b> <span class="muted">(largest first)</span><ul>${top.slice(0, 40).map(m => `<li>${modLink(m)} <span class="muted">${m.decls.length}</span></li>`).join('')}${top.length > 40 ? `<li class="muted">… ${top.length - 40} more</li>` : ''}</ul>`;
+    `<b>Files</b> <span class="muted">(largest first)</span><ul>${top.slice(0, 40).map(m => `<li>${modLink(m)} <span class="muted">${cnt(m)}${m.nparts > 1 ? ' of ' + m.decls.length : ''}</span></li>`).join('')}${top.length > 40 ? `<li class="muted">… ${top.length - 40} more</li>` : ''}</ul>`;
 }
-function panelScope() { const A = AREAS[scope.area]; modsPanel(scope.group || A.label, scopeMods(), scope.group ? A.label : esc(A.desc)); }
+function partUsage(p) { // what part p uses and what uses it, counted in distinct declarations
+  const row = (j, n, e, typed) => `<li>${plural(n, 'declaration')} of <a data-area="${j}" href="#">${esc(AREAS[j].label)}</a> <span class="muted">(${plural(e, 'edge')}${typed ? '; structure types of the rows, not drawn' : ''})</span></li>`;
+  const uses = AREAS.map((a, j) => j).filter(j => PUSED[p][j].size), usedBy = AREAS.map((a, j) => j).filter(j => PUSED[j][p].size);
+  let h = '';
+  if (SERVES[p] >= 0) h += `<p><b>Used only by</b> ${esc(AREAS[SERVES[p]].label)}. Data and vendored boxes are a content kind, a separate axis from the proof parts.</p>`;
+  h += `<b>Uses</b><ul class="plain">${uses.length ? uses.map(j => row(j, PUSED[p][j].size, PMAT[p][j], typedBy(p, j))).join('') : '<li class="muted">only its own declarations</li>'}</ul>`;
+  h += `<b>Used by</b><ul class="plain">${usedBy.length ? usedBy.map(j => row(j, PUSER[p][j].size, PMAT[j][p], typedBy(j, p))).join('') : '<li class="muted">nothing outside the part</li>'}</ul>`;
+  return h;
+}
+function panelScope() { const A = AREAS[scope.area]; modsPanel(scope.group || A.label, scopeMods(), scope.group ? A.label : esc(A.desc), scope.group ? '' : partUsage(scope.area)); }
 function panel(n) {
   const r = n.data('ref'); let h = '';
   if (level === 'ov') {
     if (r === 'root') { declPanel(rootIdx); return; }
-    const ms = MODS.filter(m => m.area === r && m.i !== rootMod);
-    modsPanel(AREAS[r].label, ms, esc(AREAS[r].desc), `<div class="act"><button data-area="${r}">Open this part</button></div>`); return;
+    modsPanel(AREAS[r].label, partFiles(r), esc(AREAS[r].desc), `<div class="act"><button data-area="${r}">Open this part</button></div>` + partUsage(r), r); return;
   }
   if (level === 'mod') {
     if (String(r).startsWith('m:') && r !== 'm:*rest') { const m = MODS[+r.slice(2)];
-      const ds = m.decls.slice().sort((a, b) => inn[b].length - inn[a].length);
-      h = `<h3>${esc(m.id)}</h3><dl><dt>part</dt><dd>${esc(AREAS[m.area].label)}</dd><dt>file</dt><dd class="mono">${esc(m.file)}</dd><dt>declarations</dt><dd>${fmt(ds.length)}</dd>` +
+      const P = scope.area, ds = m.decls.filter(i => D[i].part === P).sort((a, b) => inn[b].length - inn[a].length);
+      const split = AREAS.map((a, j) => [j, m.parts[j]]).filter(x => x[1]).sort((x, y) => y[1] - x[1]).map(([j, c]) => `${esc(AREAS[j].label)} ${c}`).join(' · ');
+      h = `<h3>${esc(m.id)}</h3>${m.nparts > 1 ? `<p><b>Mixed file.</b> Declarations by part: ${split}. Shown here are the ${ds.length} in ${esc(AREAS[P].label)}.</p>` : ''}<dl><dt>part</dt><dd>${esc(AREAS[P].label)}</dd><dt>file</dt><dd class="mono">${esc(m.file)}</dd><dt>declarations</dt><dd>${fmt(ds.length)}</dd>` +
         `<dt>sorry</dt><dd>none</dd><dt>axioms</dt><dd>${pills(axOf(ds))}</dd></dl><div class="act"><a href="${m.url}" target="_blank" rel="noopener">Source ↗</a><button data-focus="${entryDecl(m)}">Open declarations</button></div>` +
         `<b>Declarations</b> <span class="muted">(most used first)</span><ul>${ds.slice(0, 30).map(i => `<li>${declLink(i)}</li>`).join('')}${ds.length > 30 ? `<li class="muted">… ${ds.length - 30} more</li>` : ''}</ul>`;
       $('#detail').innerHTML = h; return; }
@@ -534,7 +567,7 @@ function panel(n) {
       modsPanel(r === 'w:up' ? 'Files above the window' : 'Files below the window', ms, r === 'w:up' ? 'Files closer to the top of this part. Double-click the node to move up.' : 'Files deeper in this part. Double-click the node to move down.'); return; }
     if (r === 'x:root') { declPanel(rootIdx); return; }
     if (r === 'x:same') { panelScope(); return; }
-    if (String(r).startsWith('x:')) { const a = +r.slice(2); modsPanel(AREAS[a].label, MODS.filter(m => m.area === a && m.i !== rootMod), esc(AREAS[a].desc), `<div class="act"><button data-area="${a}">Open this part</button></div>`); return; }
+    if (String(r).startsWith('x:')) { const a = +r.slice(2); modsPanel(AREAS[a].label, partFiles(a), esc(AREAS[a].desc), `<div class="act"><button data-area="${a}">Open this part</button></div>` + partUsage(a), a); return; }
   }
   if (level === 'decl') {
     if (r === 'more') { const shown = new Set(cy.nodes().map(x => x.data('ref')));
@@ -547,7 +580,7 @@ function declPanel(i) {
   const x = D[i], m = MODS[x.mod];
   const users = inn[i].slice().sort((a, b) => inn[b].length - inn[a].length);
   const deps = out[i].slice().sort((a, b) => inn[b].length - inn[a].length);
-  $('#detail').innerHTML = `<h3>${esc(x.id)}</h3><dl><dt>kind</dt><dd>${esc(x.kind)}</dd><dt>part</dt><dd>${esc(i === rootIdx ? 'main theorem' : AREAS[m.area].label)}</dd>` +
+  $('#detail').innerHTML = `<h3>${esc(x.id)}</h3><dl><dt>kind</dt><dd>${esc(x.kind)}</dd><dt>part</dt><dd>${esc(i === rootIdx ? 'main theorem' : AREAS[x.part].label)}</dd>` +
     `<dt>module</dt><dd class="mono">${esc(m.short)}</dd>` + (x.line ? `<dt>lines</dt><dd>${x.line}–${x.end}</dd>` : '') +
     `<dt>uses</dt><dd>${plural(deps.length, 'declaration')}</dd><dt>used by</dt><dd>${plural(users.length, 'declaration')}</dd>` +
     `<dt>depth</dt><dd>${depth[i]} from main theorem</dd><dt>sorry</dt><dd>none</dd><dt>axioms</dt><dd>${pills(x.ax.split(',').filter(Boolean))}</dd><dt>Mathlib</dt><dd>${extPills(x.ex)}</dd></dl>` +
@@ -557,13 +590,14 @@ function declPanel(i) {
 $('#detail').addEventListener('click', ev => {
   const t = ev.target.closest('[data-decl],[data-focus],[data-mod],[data-area],[data-group]'); if (!t) return; ev.preventDefault();
   if (t.dataset.decl) { focus = +t.dataset.decl; go('decl'); }
+  else if (t.dataset.mod && level === 'mod' && MODS[+t.dataset.mod].parts[scope.area]) gotoModule(MODS[+t.dataset.mod], scope.area);
   else if (t.dataset.focus) { focus = +t.dataset.focus; go('decl'); }
-  else if (t.dataset.mod) gotoModule(MODS[+t.dataset.mod]);
+  else if (t.dataset.mod && !(level === 'mod' && MODS[+t.dataset.mod].parts[scope.area])) gotoModule(MODS[+t.dataset.mod]);
   else if (t.dataset.area) { scope = {area: +t.dataset.area, group: null, off: 0}; go('mod'); }
   else if (t.dataset.group) { scope.group = t.dataset.group; scope.off = 0; go('mod'); }
 });
-function gotoModule(m) {
-  scope = {area: m.area, group: null, off: 0}; selKey = 'm:' + m.i; go('mod');
+function gotoModule(m, p) {
+  scope = {area: p === undefined ? m.area : p, group: null, off: 0}; selKey = 'm:' + m.i; go('mod');
   if (cy.getElementById('m:' + m.i).nonempty()) return;
   if (cy.getElementById('g:' + m.group).nonempty()) { scope.group = m.group; selKey = 'm:' + m.i; go('mod'); if (cy.getElementById('m:' + m.i).nonempty()) return; }
   const ord = layerOrder(scopeMods()), k = ord.findIndex(x => x.i === m.i);
@@ -597,11 +631,18 @@ $('#sugg').addEventListener('mousedown', e => { const d = e.target.closest('[dat
 $('#q').addEventListener('blur', () => setTimeout(() => { $('#sugg').style.display = 'none'; }, 150));
 
 /* ---------- lower sections ---------- */
-const areaCounts = AREAS.map((a, i) => MODS.filter(m => m.area === i && m.i !== rootMod));
-$('#areaList').innerHTML = AREAS.map((a, i) => `<li><span class="sw" style="background:var(--a-${a.key})"></span><b>${esc(a.label)}</b> (${plural(areaCounts[i].length, 'file')}): ${esc(a.desc)}</li>`).join('');
-const DATA_AREA = AREAS.findIndex(a => a.key === 'data');
-const topIdx = D.map(d => d.i).filter(i => i !== rootIdx && MODS[D[i].mod].area !== DATA_AREA).sort((a, b) => inn[b].length - inn[a].length).slice(0, 12);
-$('#top').innerHTML = '<tr><th>Declaration</th><th>Part</th><th class="n">Used by</th></tr>' + topIdx.map(i => `<tr><td>${declLink(i)}</td><td>${esc(AREAS[MODS[D[i].mod].area].label)}</td><td class="n">${inn[i].length}</td></tr>`).join('');
+(function () {
+  const inputs = ['analytic', 'integer', 'nonvan'].map(k => PK[k]);
+  let cross = 0; inputs.forEach(x => inputs.forEach(y => { if (x !== y) cross += PMAT[x][y]; }));
+  const sh = D.filter(d => d.part === PK.shared), kinds = {}; sh.forEach(d => { kinds[d.kind] = (kinds[d.kind] || 0) + 1; });
+  const wiring = D.filter(d => d.part === PK.final && M.wiring && M.wiring.includes(d.id)).length;
+  $('#checks').innerHTML = `Checks on the extracted graph. None of the three inputs reaches a top-level declaration of another (${cross} declaration edges between them). ` +
+    `The ${plural(sh.length, 'shared declaration')} (${Object.entries(kinds).map(([k, c]) => plural(c, k)).join(', ')}) are common definitions and generic lemmas: G<sub>m</sub>(T) and its matrices, the family interface, Li₂(1/2) itself, the statements of (1.2)–(1.4), determinant row scaling and binomial identities. ` +
+    `${M.wiring ? plural(M.wiring.length, 'declaration') + ' lie above all four inputs (the final wiring). ' : ''}Every top-level declaration of an input lies in its own part.`;
+})();
+$('#areaList').innerHTML = AREAS.map((a, i) => `<li><span class="sw" style="background:var(--a-${a.color})"></span><b>${esc(a.label)}</b> (${plural(D.filter(d => d.part === i && d.i !== rootIdx).length, 'declaration')} in ${plural(partFiles(i).length, 'file')}): ${esc(a.desc)}</li>`).join('');
+const topIdx = D.map(d => d.i).filter(i => i !== rootIdx && !AREAS[D[i].part].key.startsWith('data')).sort((a, b) => inn[b].length - inn[a].length).slice(0, 12);
+$('#top').innerHTML = '<tr><th>Declaration</th><th>Part</th><th class="n">Used by</th></tr>' + topIdx.map(i => `<tr><td>${declLink(i)}</td><td>${esc(AREAS[D[i].part].label)}</td><td class="n">${inn[i].length}</td></tr>`).join('');
 $('#top').addEventListener('click', e => { const a = e.target.closest('[data-decl]'); if (a) { e.preventDefault(); focus = +a.dataset.decl; go('decl'); $('#crumbs').scrollIntoView({behavior: 'smooth', block: 'start'}); } });
 const kinds = Object.entries(M.kindCounts).map(([k, c]) => `${fmt(c)} ${k}${c === 1 ? '' : (k.endsWith('s') ? 'es' : 's')}`).join(', ');
 $('#method').innerHTML = `<p>A Lean metaprogram run in the compiled environment starts at <code>${esc(M.root)}</code> and follows every constant used in the type and the proof term of each project declaration, including constructors and recursors of project inductive types. Declarations from Mathlib and Lean core are recorded as leaves and not traversed further. Compiler-generated auxiliaries (<code>proof_n</code>, <code>match_n</code>, equation lemmas, recursors, constructors, structure projections) are merged into the declaration they belong to.</p>` +

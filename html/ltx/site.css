@@ -20,3 +20,4 @@ figure.ltx_table{overflow-x:auto}
 .ltx_equation,.ltx_equationgroup,.ltx_eqn_table{display:block;overflow-x:auto;max-width:100%}
 .ltx_title_document{text-transform:none}
 .ltx_eqn_eqno{padding-right:.9em;white-space:nowrap}
+.ltx_para > .ltx_p,.ltx_para > .ltx_p:first-child{text-indent:0 !important}

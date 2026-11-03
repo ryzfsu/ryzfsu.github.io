@@ -1,4 +1,5 @@
-body{background:#fff;color:#1b1b1b;font:17px/1.6 Georgia,'Times New Roman',serif;margin:0}
+@import url('https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+body{background:#fff;color:#1b1b1b;font:18px/1.6 'STIX Two Text','Latin Modern Roman','Times New Roman',Times,serif;font-variant-numeric:lining-nums;margin:0}
 .ltx_page_main{max-width:48rem;margin:0 auto;padding:1rem 16px 3rem}
 .site-bar{font-size:.95rem;margin:.5rem 0 1rem;color:#5b5b5b}
 .site-bar a,.ltx_page_content a{color:#0b57a4}
@@ -8,16 +9,57 @@ body{background:#fff;color:#1b1b1b;font:17px/1.6 Georgia,'Times New Roman',serif
 .ltx_title_document{font-size:1.9rem;line-height:1.25}
 h6.ltx_title,.ltx_title_abstract{font-size:1rem}
 .ltx_title_theorem{font-size:1rem}
-.ltx_equation,.ltx_equationgroup{overflow-x:auto;max-width:100%}
 .ltx_page_footer{font-size:.8rem;color:#777;text-align:center}
 .ltx_url,.ltx_ref_tag{font-family:inherit}
 .ltx_page_main,.ltx_page_content,.ltx_document{min-width:0}
 .ltx_page_content{overflow-wrap:break-word}
 .ltx_table,.ltx_tabular,table.ltx_tabular{max-width:100%}
 figure.ltx_table{overflow-x:auto}
-.ltx_tabular{display:block;overflow-x:auto}
-.ltx_font_typewriter{word-break:break-all}
-.ltx_equation,.ltx_equationgroup,.ltx_eqn_table{display:block;overflow-x:auto;max-width:100%}
+.ltx_font_typewriter{word-break:normal;overflow-wrap:break-word}
 .ltx_title_document{text-transform:none}
-.ltx_eqn_eqno{padding-right:.9em;white-space:nowrap}
+.ltx_eqn_eqno{white-space:nowrap}
+.ltx_eqn_cell.ltx_eqn_eqno{max-width:none;width:1px}
+.ltx_eqn_eqno.ltx_align_left{padding-right:1em}
+.ltx_eqn_eqno.ltx_align_right{padding-left:1em}
 .ltx_para > .ltx_p,.ltx_para > .ltx_p:first-child{text-indent:0 !important}
+.ltx_tabular .ltx_align_justify,.ltx_tabular .ltx_align_justify .ltx_p{text-align:left !important;hyphens:none}
+/* --- visual review 20261103 --- */
+.ltx_page_content,.ltx_page_content *{font-variant-numeric:lining-nums}
+.ltx_title,.ltx_title_abstract,.ltx_role_author .ltx_personname,.ltx_caption,.ltx_tabular{font-family:inherit}
+table.ltx_tabular,table.ltx_tabular.ltx_centering{display:block;width:max-content;max-width:100%;overflow-x:auto}
+table.ltx_tabular.ltx_centering,figure.ltx_table>table.ltx_tabular{margin-left:auto;margin-right:auto}
+figure>table.ltx_tabular,figure>table.ltx_tabular.ltx_centering{display:table;max-width:none;overflow:visible}
+.ltx_tabular .ltx_tabular{display:inline-table;width:auto;overflow:visible}
+.ltx_tabular .ltx_td,.ltx_tabular .ltx_th{padding-left:.6em;padding-right:.6em}
+.ltx_tabular .ltx_td.ltx_nopad_l,.ltx_tabular .ltx_th.ltx_nopad_l{padding-left:.25em}
+.ltx_tabular .ltx_td.ltx_nopad_r,.ltx_tabular .ltx_th.ltx_nopad_r{padding-right:.25em}
+.ltx_para>table.ltx_tabular,.ltx_para>.ltx_p>table.ltx_tabular,figure.ltx_table>table.ltx_tabular{margin-top:.7em;margin-bottom:.7em}
+.ltx_border_tt{border-top:1.5px solid #000}
+.ltx_border_bb{border-bottom:1.5px solid #000}
+.ltx_nobr_punct{white-space:nowrap}
+.ltx_tabular .ltx_td:not([rowspan]):not(.ltx_align_top):not(.ltx_align_middle):not(.ltx_align_bottom),.ltx_tabular .ltx_th:not([rowspan]):not(.ltx_align_top):not(.ltx_align_middle):not(.ltx_align_bottom){vertical-align:baseline}
+.ltx_font_typewriter{font-size:.9em}
+figure.ltx_table [style*="font-size:70%"],.ltx_tabular [style*="font-size:70%"]{font-size:80%!important}
+.ltx_table .ltx_caption,.ltx_figure .ltx_caption{text-align:left;hyphens:manual}
+@media (min-width:820px){
+figure.ltx_table,figure.ltx_figure:has(>table.ltx_tabular){box-sizing:border-box;width:auto;max-width:none;margin-left:calc(50% - min(50vw - 16px,31rem));margin-right:calc(50% - min(50vw - 16px,31rem))}
+figure.ltx_table>figcaption,figure.ltx_figure>figcaption{max-width:48rem}
+.ltx_para:has(figure.ltx_table,figure.ltx_figure>table.ltx_tabular),.ltx_proof:has(figure.ltx_table,figure.ltx_figure>table.ltx_tabular),.ltx_theorem:has(figure.ltx_table,figure.ltx_figure>table.ltx_tabular),section:has(figure.ltx_table,figure.ltx_figure>table.ltx_tabular){overflow:visible}
+}
+.ltx_para,section.ltx_paragraph,section.ltx_subsection,section.ltx_subsubsection,.ltx_theorem,.ltx_proof,.ltx_abstract,figure.ltx_figure{max-width:100%;overflow-x:auto;overflow-y:hidden}
+@media (max-width:600px){body{font-size:16px}}
+a.ltx_ref.ltx_centering,a.ltx_ref.ltx_align_left,a.ltx_ref.ltx_align_center{display:inline;margin:0;text-align:inherit}
+.ltx_minipage[style*="width"]{width:auto!important;max-width:100%}
+.ltx_para>:first-child,.ltx_theorem>:first-child,.ltx_proof>:first-child,.ltx_abstract>:first-child{margin-top:0}
+.ltx_authors_1line .ltx_creator{display:block}
+.ltx_authors_1line .ltx_author_notes{display:block;margin-top:.15em}
+.ltx_authors_1line .ltx_author_notes:before{content:none}
+.ltx_authors_1line .ltx_author_notes span,.ltx_authors_1line .ltx_author_notes:hover span{display:inline;position:static;background:none;border:0;box-shadow:none;padding:0;margin:0;width:auto;z-index:auto}
+.ltx_author_notes .ltx_contact{font-size:.9rem;color:#444;font-style:italic}
+table.ltx_eqn_table{display:block;width:100%;max-width:100%;overflow-x:auto;overflow-y:hidden}
+table.ltx_eqn_table>tbody{display:table;width:100%}
+.ltx_title_paragraph:after{content:none}
+article a.ltx_ref:not(.ltx_url):not(:has(.ltx_ref_title)),.ltx_note_mark{white-space:nowrap}
+.ltx_note:hover .ltx_note_content,.ltx_note .ltx_note_content:hover{position:fixed;left:50%;right:auto;bottom:1rem;top:auto;transform:translateX(-50%);width:min(36rem,calc(100vw - 32px));max-width:none;box-sizing:border-box;z-index:30;font-size:.9rem;white-space:normal;text-align:left}
+.ltx_note_content .ltx_tag_note{display:none}
+.ltx_abstract .ltx_p{text-indent:0!important}

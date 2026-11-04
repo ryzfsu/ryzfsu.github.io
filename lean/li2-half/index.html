@@ -41,6 +41,7 @@ main.lead{padding-bottom:.5rem}
 .ico{width:1.05em;height:1.05em;vertical-align:-.17em;margin-right:.3em}
 .badge{display:inline-block;font:600 .78rem/1.5 system-ui,sans-serif;color:#fff;background:var(--ok);border-radius:999px;padding:0 .55rem;margin-left:.45rem;vertical-align:middle;white-space:nowrap}
 code,pre,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+code{overflow-wrap:anywhere}
 pre{background:var(--code);padding:.75rem .9rem;overflow-x:auto;font-size:.84rem;line-height:1.5;border-radius:6px;margin:.4rem 0}
 #axioms{white-space:pre-wrap;word-break:break-word}
 .tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.6rem;margin:1.2rem 0 .4rem}
@@ -105,7 +106,7 @@ pre{background:var(--code);padding:.75rem .9rem;overflow-x:auto;font-size:.84rem
 .sw{display:inline-block;width:.8em;height:.8em;border-radius:2px;vertical-align:-.05em;margin-right:.35em}
 footer{margin-top:3rem;font-size:.9rem;color:var(--muted)}
 @media (max-width:900px){.gwrap{grid-template-columns:1fr}}
-@media (max-width:600px){.cmp{grid-template-columns:1fr} .tiles{grid-template-columns:repeat(2,minmax(0,1fr))} h1{font-size:1.5rem}}
+@media (max-width:600px){.cmp{grid-template-columns:1fr} .tiles{grid-template-columns:repeat(2,minmax(0,1fr))} h1{font-size:1.5rem} pre{max-width:100%;min-width:0;white-space:pre-wrap;overflow-wrap:anywhere} .checks li{overflow-wrap:anywhere}}
 </style>
 </head>
 <body>
@@ -168,13 +169,13 @@ footer{margin-top:3rem;font-size:.9rem;color:var(--muted)}
 <p class="note">These three are Lean's standard axioms (propositional extensionality, choice, quotient soundness). No <code>sorryAx</code> and no project-specific axiom occurs. The released package also records acceptance by the Lean kernel through the comparator and by the independent nanoda type checker.</p>
 
 <h2>How the parts are formed</h2>
-<p class="note">The paper derives Theorem 1 from three estimates: the analytic bound (1.2), integerization (1.3) and nonvanishing (1.4); §10 combines them. The Lean final theorem <code>li2_half_irrational_of_envelope_v2</code> has the same shape: it applies an endpoint criterion, which formalizes the §10 argument, to the three estimates. The map takes the dependency closure of the top-level Lean declarations of each estimate and of the endpoint criterion. Parts are assigned to declarations, not files: a declaration reached from exactly one of them belongs to it; a declaration reached from two or more is a shared definition; the few declarations above all of them are the final wiring and belong to the Final argument. A file can hold declarations of several parts; the module view marks such files. Certificate data and vendored code are a separate axis: they are classified by content (generated tables and their kernel checks, third-party sources), and each such box is used by exactly one estimate.</p>
+<p class="note">The paper derives Theorem 1 from three estimates: the analytic bound (1.2), integerization (1.3) and nonvanishing (1.4); §10 combines them. The Lean final theorem <code>li2_half_irrational_of_envelope_v2</code> has the same shape: it applies an endpoint criterion, which formalizes the §10 argument, to the three estimates. The map takes the dependency closure of the top-level Lean declarations of each estimate and of the endpoint criterion. Parts are assigned to declarations, not files: a declaration reached from exactly one of them belongs to it; a declaration reached from two or more is a shared definition; the few declarations above all of them are the final wiring and belong to the Final argument. A file can hold declarations of several parts; the module view marks such files. Certificate data and vendored code are a separate axis: generated data folders, literal tables with their kernel checks, and third-party sources; each such box is used by exactly one estimate. Generated literal tables and their kernel checks count as data; generic soundness theorems remain proof declarations.</p>
 <p class="note">By construction an estimate never uses a declaration of another estimate: whatever it uses lies in its own closure, so it is either its own or shared. That is a consequence of the rule, not a check. The checks below test the extracted graph.</p>
 <ol class="note checks" id="checks"></ol>
 <ul class="areas" id="areaList"></ul>
 
 <h2>Most-used declarations</h2>
-<p class="note muted">Outside certificate data and vendored code, counted by direct uses.</p>
+<p class="note muted">Outside certificate data and vendored code, counted by direct uses (uses from certificate data included).</p>
 <div class="twotab"><div><h3 class="tabh">Theorems</h3><table class="toptable" id="topThm"></table></div><div><h3 class="tabh">Most used in each part (any kind)</h3><table class="toptable" id="topDef"></table></div></div>
 
 <h2>How the map was made</h2>
@@ -223,7 +224,8 @@ const declUrl = d => GH + MODS[d.mod].file + (d.line ? `#L${d.line}-L${d.end}` :
 const shortDecl = id => { const p = id.split('.'); return p[p.length - 1]; };
 // Shared definitions: description generated from the actual members
 AREAS[PK.shared].desc = (() => { const sh = D.filter(d => d.part === PK.shared).sort((a, b) => inn[b.i].length - inn[a.i].length);
-  return `Declarations used by two or more of the three estimates: ${sh.map(d => '<code>' + esc(shortDecl(d.id)) + '</code>').join(', ')}.`; })();
+  const shown = sh.slice(0, 20).map(d => '<code>' + esc(shortDecl(d.id)) + '</code>').join(', '), more = sh.length - Math.min(sh.length, 20);
+  return `Declarations used by two or more of the three estimates: ${shown}${more ? `, … and ${more} more` : ''}.`; })();
 // cross-part declaration edges (row uses column)
 const PMAT = AREAS.map(() => AREAS.map(() => 0)), PUSED = AREAS.map(() => AREAS.map(() => new Set())), PUSER = AREAS.map(() => AREAS.map(() => new Set()));
 for (let k = 0; k < G.edges.length; k += 2) { const a = G.edges[k], b = G.edges[k + 1], pa = D[a].part, pb = D[b].part; if (pa !== pb) { PMAT[pa][pb]++; PUSED[pa][pb].add(b); PUSER[pb][pa].add(a); } }
@@ -564,7 +566,7 @@ function modsPanel(title, ms, sub, extra, p) {
     `<b>Files</b> <span class="muted">(largest first)</span><ul>${top.slice(0, 40).map(m => `<li>${modLink(m)} <span class="muted">${cnt(m)}${m.nparts > 1 ? ' of ' + m.decls.length : ''}</span></li>`).join('')}${top.length > 40 ? `<li class="muted">… ${top.length - 40} more</li>` : ''}</ul>`;
 }
 function partUsage(p) { // what part p uses and what uses it, counted in distinct declarations
-  const row = (j, n, e, tf) => `<li>${plural(n, 'declaration')} of <a data-area="${j}" href="#">${esc(AREAS[j].label)}</a> <span class="muted">(${plural(e, 'edge')}${tf >= 0 ? `; edges from the data to ${kindList(HIDK[tf])} of the part it serves (row types, checkers, table definitions), not drawn` : ''})</span></li>`;
+  const row = (j, n, e, tf) => `<li>${plural(n, 'declaration')} of <a data-area="${j}" href="#">${esc(AREAS[j].label)}</a> <span class="muted">(${plural(e, 'edge')}${tf >= 0 ? `; edges from the data to ${kindList(HIDK[tf])} of the part it serves (row types, checkers, soundness lemmas applied per shard, table definitions), not drawn` : ''})</span></li>`;
   const uses = AREAS.map((a, j) => j).filter(j => PUSED[p][j].size), usedBy = AREAS.map((a, j) => j).filter(j => PUSED[j][p].size);
   let h = '';
   if (SERVES[p] >= 0) h += `<p><b>Used only by</b> ${esc(AREAS[SERVES[p]].label)}. Data and vendored boxes are a content kind, a separate axis from the proof parts.</p>`;

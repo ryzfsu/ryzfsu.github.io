@@ -1,0 +1,153 @@
+/* Paper 2 page-only layout refinements.  No text or math is changed. */
+@media (max-width: 600px) {
+  figure.ltx_table > figcaption,
+  figure.ltx_figure > figcaption {
+    line-height: 1.35;
+  }
+
+  /* Keep each wide table self-contained while the reader swipes it. */
+  figure.ltx_table {
+    scrollbar-width: thin;
+    scrollbar-color: #8b8b8b transparent;
+  }
+  [id="S9.T1"] > table.ltx_tabular,
+  [id="A4.T1a"] > table.ltx_tabular {
+    display: table;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    table-layout: fixed;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    font-size: .92em;
+  }
+  [id="S9.T1"] > table.ltx_tabular th,
+  [id="S9.T1"] > table.ltx_tabular td,
+  [id="A4.T1a"] > table.ltx_tabular th,
+  [id="A4.T1a"] > table.ltx_tabular td {
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+  [id="S9.T1"] > table.ltx_tabular th:first-child,
+  [id="S9.T1"] > table.ltx_tabular td:first-child,
+  [id="A4.T1a"] > table.ltx_tabular th:first-child,
+  [id="A4.T1a"] > table.ltx_tabular td:first-child { width: 23%; }
+  [id="S9.T1"] > table.ltx_tabular th:nth-child(2),
+  [id="S9.T1"] > table.ltx_tabular td:nth-child(2),
+  [id="A4.T1a"] > table.ltx_tabular th:nth-child(2),
+  [id="A4.T1a"] > table.ltx_tabular td:nth-child(2) { width: 77%; }
+  [id="S9.T1"] > table.ltx_tabular .ltx_inline-block,
+  [id="S9.T1"] > table.ltx_tabular .ltx_p,
+  [id="A4.T1a"] > table.ltx_tabular .ltx_inline-block,
+  [id="A4.T1a"] > table.ltx_tabular .ltx_p {
+    width: auto !important;
+    max-width: 100%;
+    white-space: normal;
+  }
+
+  /* Keep long exact fractions legible while allowing the table itself to
+     scroll instead of widening the page. */
+  [id="S8.T0"] > table.ltx_tabular {
+    font-size: .88em;
+  }
+  [id="A4.T1"] > table.ltx_tabular {
+    min-width: 36rem;
+    font-size: .88em;
+  }
+  [id="A4.T2"] > table.ltx_tabular {
+    min-width: 39rem;
+    font-size: .88em;
+  }
+
+  /* Give the tag and equation a stable gap on narrow displays. */
+  table.ltx_eqn_table {
+    scroll-padding-inline: .75rem;
+    scrollbar-width: thin;
+    scrollbar-color: #8b8b8b transparent;
+  }
+  table.ltx_eqn_table .ltx_eqn_eqno {
+    padding-right: .65em;
+  }
+  [id="S2.Ex15"] .ltx_Math,
+  [id="S7.Ex2"] .ltx_Math,
+  [id="S7.Ex47"] .ltx_Math,
+  [id="A4.Ex1"] .ltx_Math {
+    font-size: .82em;
+  }
+}
+
+/* Desktop certificate rows: the source marks all three columns at 70%,
+   while the shared stylesheet raises only the typewriter text to 80%.
+   Reapply one scale and line-height to keep wrapped multipliers aligned with
+   the branch and lower-bound columns. */
+@media (min-width: 601px) {
+  [id="A4.T2"] > table.ltx_tabular {
+    width: min(100%, 50rem);
+    table-layout: fixed;
+    font-size: .88em;
+    line-height: 1.4;
+  }
+  [id="A4.T2"] > table.ltx_tabular th,
+  [id="A4.T2"] > table.ltx_tabular td {
+    font-size: inherit;
+    line-height: inherit;
+    vertical-align: top;
+  }
+  [id="A4.T2"] > table.ltx_tabular th:nth-child(1),
+  [id="A4.T2"] > table.ltx_tabular td:nth-child(1) { width: 17%; }
+  [id="A4.T2"] > table.ltx_tabular th:nth-child(2),
+  [id="A4.T2"] > table.ltx_tabular td:nth-child(2) { width: 22%; }
+  [id="A4.T2"] > table.ltx_tabular th:nth-child(3),
+  [id="A4.T2"] > table.ltx_tabular td:nth-child(3) { width: 61%; }
+  [id="A4.T2"] > table.ltx_tabular .ltx_inline-block,
+  [id="A4.T2"] > table.ltx_tabular .ltx_p,
+  [id="A4.T2"] > table.ltx_tabular .ltx_text,
+  [id="A4.T2"] > table.ltx_tabular .ltx_font_typewriter,
+  [id="A4.T2"] > table.ltx_tabular mjx-container {
+    font-size: inherit !important;
+    line-height: inherit !important;
+  }
+  /* Root 20261106: MathJax renders the branch and bound columns smaller than the text column. */
+  [id="A4.T2"] > table.ltx_tabular td:nth-child(1) mjx-container,
+  [id="A4.T2"] > table.ltx_tabular td:nth-child(2) mjx-container,
+  [id="A4.T2"] > table.ltx_tabular th mjx-container {
+    font-size: 1.12em !important;
+  }
+  [id="A4.T2"] > table.ltx_tabular .ltx_inline-block,
+  [id="A4.T2"] > table.ltx_tabular .ltx_p {
+    width: auto !important;
+    max-width: 100%;
+  }
+  [id="A4.T2"] > table.ltx_tabular .ltx_font_typewriter {
+    font-family: inherit;
+    font-weight: 400;
+    overflow-wrap: anywhere;
+  }
+
+  /* Constant lists: reduce only these wide displays and reserve vertical
+     room between stacked MathJax rows so fractions do not touch. */
+  [id="A4.Ex1"],
+  [id="S7.Ex2"],
+  [id="S2.Ex15"],
+  [id="S5.Ex20"],
+  [id="S8.Ex1"] {
+    font-size: .84em;
+    line-height: 1.35;
+  }
+  [id="A4.Ex1"] .ltx_eqn_cell,
+  [id="S7.Ex2"] .ltx_eqn_cell,
+  [id="S2.Ex15"] .ltx_eqn_cell,
+  [id="S5.Ex20"] .ltx_eqn_cell,
+  [id="S8.Ex1"] .ltx_eqn_cell {
+    line-height: 1.35;
+    padding-top: .22em;
+    padding-bottom: .22em;
+  }
+  [id="A4.Ex1"] mjx-container,
+  [id="S7.Ex2"] mjx-container,
+  [id="S2.Ex15"] mjx-container,
+  [id="S5.Ex20"] mjx-container,
+  [id="S8.Ex1"] mjx-container {
+    font-size: inherit !important;
+  }
+}

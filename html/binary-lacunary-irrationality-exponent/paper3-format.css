@@ -1,0 +1,9 @@
+/* Paper 3 page-only layout refinements. No text or mathematics is changed. */
+@media (min-width: 601px) {
+  /* These two long single-line displays otherwise exceed the 48rem content
+     measure by only a few pixels and show an unnecessary horizontal bar. */
+  [id="S3.E2"] mjx-container,
+  [id="S5.E10"] mjx-container {
+    font-size: .96em !important;
+  }
+}

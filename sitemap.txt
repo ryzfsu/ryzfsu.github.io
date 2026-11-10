@@ -52,3 +52,4 @@ https://ryzfsu.github.io/html/equal-radicals-power-saving-two-thirds/
 https://ryzfsu.github.io/html/equal-radicals-consecutive-products/
 https://ryzfsu.github.io/lean/li2-half/
 https://ryzfsu.github.io/lean/li2-alln/
+https://ryzfsu.github.io/lean/small-height-lacunary/

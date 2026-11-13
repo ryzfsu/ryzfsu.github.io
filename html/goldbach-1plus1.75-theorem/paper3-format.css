@@ -1,0 +1,29 @@
+/* Page-only layout refinements. Mathematical and prose text is unchanged. */
+@media (max-width: 600px) {
+  /* Keep the three long abstract comparisons in their own scrollable box.
+     The surrounding abstract prose remains wrapped at the phone width. */
+  .ltx_abstract mjx-container {
+    display: inline-block;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    vertical-align: middle;
+  }
+  .ltx_abstract .ltx_nobr_punct {
+    display: inline-block;
+    max-width: 100%;
+    vertical-align: middle;
+  }
+  .ltx_abstract { overflow-x: visible; }
+  /* The captionof/minipage table is a flex figure. Centering an oversized
+     child moves its first column left of the scroll origin on phones. */
+  [id="A2.SS6.fig1"] > table.ltx_tabular {
+    align-self: flex-start;
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+/* Keep the frozen source's footnotesize scripts table readable on screen. */
+[id="A2.SS6.fig1"] [style*="font-size:80%"] {
+  font-size: 85% !important;
+}

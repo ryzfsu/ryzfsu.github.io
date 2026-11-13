@@ -6,6 +6,7 @@ https://ryzfsu.github.io/papers/li2-quarter-irrationality.html
 https://ryzfsu.github.io/papers/li2-minus-half-irrationality.html
 https://ryzfsu.github.io/papers/li3-reciprocals-at-least-27-irrationality.html
 https://ryzfsu.github.io/papers/li3-large-integer-reciprocals-irrationality.html
+https://ryzfsu.github.io/papers/abc-effective-bound-one-third.html
 https://ryzfsu.github.io/papers/abc-exceptional-set-20over37.html
 https://ryzfsu.github.io/papers/abc-exceptional-set-7over12.html
 https://ryzfsu.github.io/papers/abc-valuation-product-5over3.html
@@ -24,6 +25,7 @@ https://ryzfsu.github.io/papers/li2-quarter-irrationality.pdf
 https://ryzfsu.github.io/papers/li2-minus-half-irrationality.pdf
 https://ryzfsu.github.io/papers/li3-reciprocals-at-least-27-irrationality.pdf
 https://ryzfsu.github.io/papers/li3-large-integer-reciprocals-irrationality.pdf
+https://ryzfsu.github.io/papers/abc-effective-bound-one-third.pdf
 https://ryzfsu.github.io/papers/abc-exceptional-set-20over37.pdf
 https://ryzfsu.github.io/papers/abc-exceptional-set-7over12.pdf
 https://ryzfsu.github.io/papers/abc-valuation-product-5over3.pdf
@@ -42,6 +44,7 @@ https://ryzfsu.github.io/html/li2-quarter-irrationality/
 https://ryzfsu.github.io/html/li2-minus-half-irrationality/
 https://ryzfsu.github.io/html/li3-reciprocals-at-least-27-irrationality/
 https://ryzfsu.github.io/html/li3-large-integer-reciprocals-irrationality/
+https://ryzfsu.github.io/html/abc-effective-bound-one-third/
 https://ryzfsu.github.io/html/abc-exceptional-set-20over37/
 https://ryzfsu.github.io/html/abc-exceptional-set-7over12/
 https://ryzfsu.github.io/html/abc-valuation-product-5over3/

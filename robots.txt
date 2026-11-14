@@ -3,3 +3,4 @@ Allow: /
 Sitemap: https://ryzfsu.github.io/sitemap.xml
 Sitemap: https://ryzfsu.github.io/sitemap-papers.xml
 Sitemap: https://ryzfsu.github.io/sitemap.txt
+Sitemap: https://ryzhang.pages.dev/sitemap.xml

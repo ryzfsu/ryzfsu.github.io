@@ -1,2 +1,3 @@
 User-agent: *
 Allow: /
+Sitemap: https://ryzhang.pages.dev/sitemap.xml

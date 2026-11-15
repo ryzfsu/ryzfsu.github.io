@@ -8,4 +8,7 @@
   }
   function go(){ if(window.MathJax&&MathJax.startup&&MathJax.startup.promise){MathJax.startup.promise.then(fit);} else fit(); }
   if(document.readyState==='complete')go(); else window.addEventListener('load',go);
+  /* With MathJax ui/lazy, formulas are typeset as they scroll into view: refit after scrolling settles. */
+  var tm=null; function later(){ clearTimeout(tm); tm=setTimeout(fit,400); }
+  window.addEventListener('scroll',later,{passive:true}); window.addEventListener('resize',later);
 })();

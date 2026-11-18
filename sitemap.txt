@@ -58,6 +58,7 @@ https://ryzfsu.github.io/html/small-height-lacunary-irrationality-exponent/
 https://ryzfsu.github.io/html/binary-lacunary-irrationality-exponent/
 https://ryzfsu.github.io/html/equal-radicals-power-saving-two-thirds/
 https://ryzfsu.github.io/html/equal-radicals-consecutive-products/
+https://ryzfsu.github.io/html/exponential-integrals-bessel-kummer-relations/
 https://ryzfsu.github.io/lean/li2-half/
 https://ryzfsu.github.io/lean/li2-alln/
 https://ryzfsu.github.io/lean/small-height-lacunary/

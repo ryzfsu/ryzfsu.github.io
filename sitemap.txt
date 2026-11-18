@@ -18,6 +18,7 @@ https://ryzfsu.github.io/papers/small-height-lacunary-irrationality-exponent.htm
 https://ryzfsu.github.io/papers/binary-lacunary-irrationality-exponent.html
 https://ryzfsu.github.io/papers/equal-radicals-power-saving-two-thirds.html
 https://ryzfsu.github.io/papers/equal-radicals-consecutive-products.html
+https://ryzfsu.github.io/papers/exponential-integrals-bessel-kummer-relations.html
 https://ryzfsu.github.io/papers/li2-integer-reciprocals-irrationality.pdf
 https://ryzfsu.github.io/papers/li2-half-irrationality.pdf
 https://ryzfsu.github.io/papers/li2-third-irrationality.pdf
@@ -37,6 +38,7 @@ https://ryzfsu.github.io/papers/small-height-lacunary-irrationality-exponent.pdf
 https://ryzfsu.github.io/papers/binary-lacunary-irrationality-exponent.pdf
 https://ryzfsu.github.io/papers/equal-radicals-power-saving-two-thirds.pdf
 https://ryzfsu.github.io/papers/equal-radicals-consecutive-products.pdf
+https://ryzfsu.github.io/papers/exponential-integrals-bessel-kummer-relations.pdf
 https://ryzfsu.github.io/html/li2-integer-reciprocals-irrationality/
 https://ryzfsu.github.io/html/li2-half-irrationality/
 https://ryzfsu.github.io/html/li2-third-irrationality/

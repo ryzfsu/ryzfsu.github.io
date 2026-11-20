@@ -1,0 +1,16 @@
+@media (max-width: 520px) {
+  .subexp-wide-inline {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+}
+
+@media (min-width: 768px) {
+  [id="S3.p1"] > .ltx_eqn_table {
+    margin-inline: 0;
+    box-sizing: border-box;
+    width: 100%;
+  }
+}

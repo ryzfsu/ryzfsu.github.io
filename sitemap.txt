@@ -48,6 +48,7 @@ https://ryzfsu.github.io/html/li2-quarter-irrationality/
 https://ryzfsu.github.io/html/li2-minus-half-irrationality/
 https://ryzfsu.github.io/html/li3-reciprocals-at-least-27-irrationality/
 https://ryzfsu.github.io/html/li3-large-integer-reciprocals-irrationality/
+https://ryzfsu.github.io/html/abc-log-bound-two-ninths/
 https://ryzfsu.github.io/html/abc-effective-bound-one-third/
 https://ryzfsu.github.io/html/abc-exceptional-set-20over37/
 https://ryzfsu.github.io/html/abc-exceptional-set-7over12/

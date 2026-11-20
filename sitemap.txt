@@ -67,3 +67,4 @@ https://ryzfsu.github.io/html/exponential-integrals-bessel-kummer-relations/
 https://ryzfsu.github.io/lean/li2-half/
 https://ryzfsu.github.io/lean/li2-alln/
 https://ryzfsu.github.io/lean/small-height-lacunary/
+https://ryzfsu.github.io/lean/abc-log-bound-two-ninths/
